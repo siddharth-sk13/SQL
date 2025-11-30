@@ -1,0 +1,196 @@
+create database Hospital_Management_System;
+use Hospital_Management_System;
+
+CREATE TABLE Departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(100) 
+);
+
+INSERT INTO Departments VALUES
+(1, 'Cardiology'),
+(2, 'Neurology'),
+(3, 'Orthopedics'),
+(4, 'Pediatrics'),
+(5, 'Dermatology');
+
+select * from Departments;
+
+
+CREATE TABLE Doctors (
+    doctor_id INT PRIMARY KEY,
+    doctor_name VARCHAR(100) ,
+    specialization VARCHAR(100),
+    department_id INT,
+    contact_number VARCHAR(15),
+    email VARCHAR(100),
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+);
+
+
+INSERT INTO Doctors VALUES
+(101, 'Dr. Arvind Sharma', 'Cardiologist', 1, '9876543210', 'arvind.sharma@hospital.com'),
+(102, 'Dr. Sneha Mehta', 'Neurologist', 2, '9876543211', 'sneha.mehta@hospital.com'),
+(103, 'Dr. Ravi Verma', 'Orthopedic', 3, '9876543212', 'ravi.verma@hospital.com'),
+(104, 'Dr. Neha Bansal', 'Pediatrician', 4, '9876543213', 'neha.bansal@hospital.com'),
+(105, 'Dr. Sanjay Patel', 'Dermatologist', 5, '9876543214', 'sanjay.patel@hospital.com');
+
+
+select * from Doctors;
+
+
+CREATE TABLE Patients (
+    patient_id INT PRIMARY KEY,
+    patient_name VARCHAR(100) ,
+    dob DATE,
+    gender VARCHAR(10),
+    contact_number VARCHAR(15),
+    address VARCHAR(255)
+);
+
+INSERT INTO Patients VALUES
+(201, 'Amit Kumar', '1990-05-12', 'Male', '9990001111', 'Delhi'),
+(202, 'Pooja Rani', '1985-09-23', 'Female', '9990001112', 'Mumbai'),
+(203, 'Rahul Joshi', '1978-01-15', 'Male', '9990001113', 'Chennai'),
+(204, 'Neha Singh', '1992-11-03', 'Female', '9990001114', 'Kolkata'),
+(205, 'Mohit Rana', '2000-07-30', 'Male', '9990001115', 'Bangalore'),
+(206, 'Sonal Kapoor', '1995-12-05', 'Female', '9990001116', 'Pune'),
+(207, 'Karan Malhotra', '1988-06-19', 'Male', '9990001117', 'Ahmedabad'),
+(208, 'Isha Jain', '1993-03-08', 'Female', '9990001118', 'Hyderabad');
+
+
+select * from Patients;
+
+
+CREATE TABLE Appointments (
+    appointment_id INT PRIMARY KEY,
+    patient_id INT,
+    doctor_id INT,
+    appointment_date DATE,
+    appointment_time TIME,
+    reason VARCHAR(255),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+
+INSERT INTO Appointments VALUES
+(301, 201, 101, '2025-06-25', '10:00:00', 'Chest Pain'),
+(302, 202, 102, '2025-06-26', '11:30:00', 'Headache'),
+(303, 203, 103, '2025-06-26', '14:00:00', 'Knee Pain'),
+(304, 204, 104, '2025-06-27', '09:00:00', 'Fever'),
+(305, 205, 105, '2025-06-27', '13:00:00', 'Rash'),
+(306, 206, 101, '2025-06-28', '10:30:00', 'Palpitations'),
+(307, 207, 102, '2025-06-28', '12:00:00', 'Migraine'),
+(308, 208, 103, '2025-06-29', '15:00:00', 'Back Pain');
+
+
+select * from Appointments;
+
+
+CREATE TABLE Medications (
+    medication_id INT PRIMARY KEY,
+    patient_id INT,
+    doctor_id INT,
+    medication_name VARCHAR(100),
+    dosage VARCHAR(50),
+    start_date DATE,
+    end_date DATE,
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+
+INSERT INTO Medications VALUES
+(401, 201, 101, 'Atenolol', '50mg daily', '2025-06-25', '2025-07-25'),
+(402, 202, 102, 'Paracetamol', '500mg thrice a day', '2025-06-26', '2025-06-30'),
+(403, 203, 103, 'Ibuprofen', '400mg twice a day', '2025-06-26', '2025-07-10'),
+(404, 204, 104, 'Azithromycin', '250mg once daily', '2025-06-27', '2025-06-30'),
+(405, 205, 105, 'Cetirizine', '10mg at night', '2025-06-27', '2025-07-05'),
+(406, 206, 101, 'Metoprolol', '25mg daily', '2025-06-28', '2025-07-28'),
+(407, 207, 102, 'Sumatriptan', '50mg as needed', '2025-06-28', '2025-07-28'),
+(408, 208, 103, 'Diclofenac', '50mg twice daily', '2025-06-29', '2025-07-10');
+
+-- Get all patients
+select * 
+from Medications;
+
+-- List all doctors with specialization
+SELECT doctor_name, specialization 
+FROM Doctors;
+
+
+-- Show appointments for a specific date
+SELECT * FROM Appointments
+ WHERE appointment_date = '2025-06-27';
+
+
+-- Get medications for a patient
+SELECT medication_name, dosage 
+FROM Medications 
+WHERE patient_id = 201;
+
+
+-- Find all female patients
+SELECT * 
+FROM Patients
+ WHERE gender = 'Female';
+
+
+-- List doctors sorted by name
+SELECT * 
+FROM Doctors 
+ORDER BY doctor_id DESC;
+
+
+-- Show appointments with doctor and patient names
+SELECT 
+  a.appointment_id, 
+  p.patient_name, 
+  d.doctor_name, 
+  a.appointment_date 
+FROM Appointments a
+JOIN Patients p ON a.patient_id = p.patient_id
+JOIN Doctors d ON a.doctor_id = d.doctor_id;
+
+
+-- List patients and their medications
+SELECT 
+  p.patient_name, 
+  m.medication_name, 
+  m.dosage 
+FROM Medications m
+JOIN Patients p ON m.patient_id = p.patient_id;
+
+
+-- Doctors with their departments
+SELECT d.doctor_name, dp.department_name 
+FROM Doctors d
+JOIN Departments dp ON d.department_id = dp.department_id;
+
+-- Count total patients 
+SELECT COUNT(*) AS total_patients FROM Patients;
+
+-- Count appointments per doctor
+SELECT doctor_id, COUNT(*) AS total_appointments 
+FROM Appointments 
+GROUP BY doctor_id;
+
+--  Number of doctors in each department
+SELECT department_id, COUNT(*) AS doctor_count 
+FROM Doctors 
+GROUP BY department_id;
+
+-- Patients who had appointments with a Cardiologist
+SELECT DISTINCT p.patient_name
+FROM Patients p
+WHERE p.patient_id IN (
+    SELECT a.patient_id
+    FROM Appointments a
+    JOIN Doctors d ON a.doctor_id = d.doctor_id
+    WHERE d.specialization = 'Cardiologist'
+);
+
+-- Doctors who prescribed 'Paracetamol'
+SELECT DISTINCT d.doctor_name
+FROM Doctors d
+WHERE d.doctor_id IN (
+    SELECT doctor_id FROM Medications WHERE medication_name = 'Paracetamol'
+);

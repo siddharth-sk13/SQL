@@ -1,0 +1,235 @@
+create database Flight_Booking_and_Analysis_System ;
+
+use Flight_Booking_and_Analysis_System;
+
+CREATE TABLE Airports (
+    airport_id INT PRIMARY KEY,
+    airport_name VARCHAR(100),
+    city VARCHAR(50),
+    country VARCHAR(50)
+);
+
+INSERT INTO Airports VALUES 
+(1, 'Indira Gandhi Intl', 'Delhi', 'India'),
+(2, 'Chhatrapati Shivaji Intl', 'Mumbai', 'India'),
+(3, 'Kempegowda Intl', 'Bangalore', 'India'),
+(4, 'Rajiv Gandhi Intl', 'Hyderabad', 'India'),
+(5, 'Netaji Subhas Chandra Bose Intl', 'Kolkata', 'India'),
+(6, 'Dubai Intl', 'Dubai', 'UAE'),
+(7, 'Heathrow', 'London', 'UK'),
+(8, 'John F Kennedy Intl', 'New York', 'USA'),
+(9, 'Los Angeles Intl', 'Los Angeles', 'USA'),
+(10, 'Frankfurt Airport', 'Frankfurt', 'Germany');
+
+select * from airports;
+
+CREATE TABLE Airlines (
+    airline_id INT PRIMARY KEY,
+    airline_name VARCHAR(100),
+    headquarters VARCHAR(100)
+);
+
+INSERT INTO Airlines VALUES 
+(1, 'IndiGo', 'Gurgaon'),
+(2, 'Air India', 'New Delhi'),
+(3, 'Emirates', 'Dubai'),
+(4, 'British Airways', 'London'),
+(5, 'Lufthansa', 'Frankfurt');
+
+
+select * from Airlines;
+
+CREATE TABLE Flights (
+    flight_id INT PRIMARY KEY,
+    airline_id INT,
+    departure_airport INT,
+    arrival_airport INT,
+    departure_time DATETIME,
+    arrival_time DATETIME,
+    duration INT,        -- in minutes
+    price DECIMAL(10,2),
+    FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id),
+    FOREIGN KEY (departure_airport) REFERENCES Airports(airport_id),
+    FOREIGN KEY (arrival_airport) REFERENCES Airports(airport_id)
+);
+
+INSERT INTO Flights VALUES
+(101, 1, 1, 2, '2025-07-01 06:00:00', '2025-07-01 08:15:00', 135, 4500.00),
+(102, 2, 2, 1, '2025-07-01 12:30:00', '2025-07-01 14:45:00', 135, 4700.00),
+(103, 1, 3, 4, '2025-07-02 09:00:00', '2025-07-02 10:30:00', 90, 3000.00),
+(104, 2, 4, 3, '2025-07-02 14:00:00', '2025-07-02 15:30:00', 90, 3200.00),
+(105, 3, 6, 1, '2025-07-03 22:00:00', '2025-07-04 03:30:00', 330, 15000.00),
+(106, 4, 7, 1, '2025-07-03 10:00:00', '2025-07-03 23:30:00', 810, 20000.00),
+(107, 5, 10, 1, '2025-07-04 07:00:00', '2025-07-04 20:00:00', 780, 22000.00),
+(108, 3, 6, 2, '2025-07-05 01:00:00', '2025-07-05 06:00:00', 300, 14500.00),
+(109, 4, 7, 3, '2025-07-06 15:00:00', '2025-07-06 19:30:00', 270, 18000.00),
+(110, 1, 2, 5, '2025-07-07 08:00:00', '2025-07-07 10:30:00', 150, 5000.00),
+(111, 2, 5, 2, '2025-07-08 18:00:00', '2025-07-08 20:30:00', 150, 4900.00),
+(112, 1, 1, 3, '2025-07-09 09:00:00', '2025-07-09 11:15:00', 135, 4100.00),
+(113, 2, 3, 1, '2025-07-09 13:00:00', '2025-07-09 15:00:00', 120, 4200.00),
+(114, 3, 6, 5, '2025-07-10 17:00:00', '2025-07-10 22:00:00', 300, 16000.00),
+(115, 4, 7, 6, '2025-07-10 20:00:00', '2025-07-11 03:00:00', 420, 21000.00),
+(116, 1, 4, 5, '2025-07-11 05:00:00', '2025-07-11 07:00:00', 120, 3500.00),
+(117, 2, 5, 4, '2025-07-11 18:00:00', '2025-07-11 20:00:00', 120, 3600.00),
+(118, 3, 6, 10, '2025-07-12 04:00:00', '2025-07-12 09:30:00', 330, 17000.00),
+(119, 5, 10, 2, '2025-07-13 01:30:00', '2025-07-13 14:00:00', 750, 21000.00),
+(120, 4, 7, 9, '2025-07-14 12:00:00', '2025-07-14 23:00:00', 660, 19000.00);
+
+
+
+select * from Flights;
+
+
+CREATE TABLE Passengers (
+    passenger_id INT PRIMARY KEY,
+    full_name VARCHAR(100),
+    email VARCHAR(100),
+    phone VARCHAR(15),
+    gender VARCHAR(10)
+);
+INSERT INTO Passengers VALUES
+(1001, 'Rahul Sharma', 'rahul@example.com', '9876543210', 'Male'),
+(1002, 'Neha Verma', 'neha@example.com', '9123456780', 'Female'),
+(1003, 'Amit Singh', 'amit@example.com', '9812345670', 'Male'),
+(1004, 'Pooja Jain', 'pooja@example.com', '9876554321', 'Female'),
+(1005, 'Vikram Rana', 'vikram@example.com', '9988776655', 'Male'),
+(1006, 'Sara Khan', 'sara@example.com', '9555544433', 'Female'),
+(1007, 'Arjun Patel', 'arjun@example.com', '9898989898', 'Male'),
+(1008, 'Nikita Rao', 'nikita@example.com', '9777755555', 'Female'),
+(1009, 'Mohit Sinha', 'mohit@example.com', '9444433333', 'Male'),
+(1010, 'Simran Kaur', 'simran@example.com', '9666612345', 'Female'),
+(1011, 'Karan Mehta', 'karan@example.com', '9123451212', 'Male'),
+(1012, 'Rhea Kapoor', 'rhea@example.com', '9234567890', 'Female'),
+(1013, 'Rakesh Yadav', 'rakesh@example.com', '9876523456', 'Male'),
+(1014, 'Priya Nair', 'priya@example.com', '9991112222', 'Female'),
+(1015, 'Aditya Bose', 'aditya@example.com', '9334455667', 'Male'),
+(1016, 'Ankita Reddy', 'ankita@example.com', '9000012345', 'Female'),
+(1017, 'Deepak Das', 'deepak@example.com', '9988771122', 'Male'),
+(1018, 'Maya Sen', 'maya@example.com', '9111222333', 'Female'),
+(1019, 'Raj Malhotra', 'raj@example.com', '9898234567', 'Male'),
+(1020, 'Sanya Gupta', 'sanya@example.com', '9333344444', 'Female');
+
+select * from Flights;
+
+
+
+CREATE TABLE Bookings (
+    booking_id INT PRIMARY KEY,
+    flight_id INT,
+    passenger_id INT,
+    booking_date DATE,
+    seat_no VARCHAR(5),
+    status VARCHAR(20), -- Confirmed, Cancelled
+    FOREIGN KEY (flight_id) REFERENCES Flights(flight_id),
+    FOREIGN KEY (passenger_id) REFERENCES Passengers(passenger_id)
+);
+
+INSERT INTO Bookings VALUES
+(5001, 101, 1001, '2025-06-20', '12A', 'Confirmed'),
+(5002, 102, 1002, '2025-06-21', '14C', 'Cancelled'),
+(5003, 103, 1003, '2025-06-21', '18D', 'Pending'),
+(5004, 104, 1004, '2025-06-22', '20B', 'Confirmed'),
+(5005, 105, 1005, '2025-06-22', '2A', 'Confirmed'),
+(5006, 106, 1006, '2025-06-23', '3B', 'Cancelled'),
+(5007, 107, 1007, '2025-06-23', '4C', 'Pending'),
+(5008, 108, 1008, '2025-06-24', '6A', 'Confirmed'),
+(5009, 109, 1009, '2025-06-24', '7D', 'Pending'),
+(5010, 110, 1010, '2025-06-25', '8B', 'Confirmed'),
+(5011, 111, 1011, '2025-06-25', '9A', 'Cancelled'),
+(5012, 112, 1012, '2025-06-25', '10A', 'Confirmed'),
+(5013, 113, 1013, '2025-06-26', '11C', 'Confirmed'),
+(5014, 114, 1014, '2025-06-26', '12B', 'Pending'),
+(5015, 115, 1015, '2025-06-26', '13A', 'Cancelled'),
+(5016, 116, 1016, '2025-06-27', '14A', 'Confirmed'),
+(5017, 117, 1017, '2025-06-27', '15C', 'Pending'),
+(5018, 118, 1018, '2025-06-27', '16D', 'Confirmed'),
+(5019, 119, 1019, '2025-06-28', '17A', 'Cancelled'),
+(5020, 120, 1020, '2025-06-28', '18B', 'Confirmed');
+
+
+select * from Bookings;
+
+
+SELECT * 
+FROM Flights
+ WHERE price > 10000;
+
+SELECT * 
+FROM Passengers 
+WHERE gender = 'Female';
+
+SELECT * 
+FROM Bookings
+WHERE status = 'Cancelled';
+
+SELECT * FROM Flights ORDER BY price DESC;
+
+SELECT * FROM Bookings ORDER BY booking_date DESC;
+
+ SELECT * FROM Flights ORDER BY price DESC LIMIT 5;
+
+ -- Bookings with Passenger and Flight Details
+SELECT b.booking_id, p.full_name, f.flight_id, f.departure_time, b.status
+FROM Bookings b
+JOIN Passengers p ON b.passenger_id = p.passenger_id
+JOIN Flights f ON b.flight_id = f.flight_id;
+
+-- Flight Details with Airline and Airports
+SELECT f.flight_id, a.airline_name, d.airport_name AS from_airport, a2.airport_name AS to_airport
+FROM Flights f
+JOIN Airlines a ON f.airline_id = a.airline_id
+JOIN Airports d ON f.departure_airport = d.airport_id
+JOIN Airports a2 ON f.arrival_airport = a2.airport_id;
+
+--  Count Bookings per Flight
+SELECT flight_id, COUNT(*) AS total_bookings
+FROM Bookings
+GROUP BY flight_id;
+
+
+-- Bookings by Status
+SELECT status, COUNT(*) FROM Bookings GROUP BY status;
+
+
+-- Average Flight Price per Airline
+SELECT a.airline_name, AVG(f.price) AS avg_price
+FROM Flights f
+JOIN Airlines a ON f.airline_id = a.airline_id
+GROUP BY a.airline_name;
+
+
+-- Passengers Who Booked the Most Expensive Flight
+SELECT full_name FROM Passengers
+WHERE passenger_id IN (
+    SELECT passenger_id FROM Bookings
+    WHERE flight_id = (
+        SELECT flight_id FROM Flights ORDER BY price DESC LIMIT 1
+    )
+);
+
+-- Flights With Above-Average Duration
+SELECT * FROM Flights
+WHERE duration > (SELECT AVG(duration) FROM Flights);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
